@@ -12,6 +12,7 @@ export default function Categories() {
           return <li
             onClick={() => setActiveIndex(index)}
             className={activeIndex === index ? "active" : ""}
+            key={index}
           >{value}</li>
         })}
       </ul>
