@@ -1,4 +1,11 @@
+import { useState } from 'react';
+
 export default function Sort() {
+  const [selectedVariant, setSelectedVariant] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const sortVariants = ['популярности', 'цене', 'алфавиту'];
+
   return (
     <div className="sort">
       <div className="sort__label">
@@ -14,15 +21,27 @@ export default function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span onClick={() => setShowPopup(!showPopup)}>{sortVariants[selectedVariant]}</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div>
+      {showPopup && (
+        <div className="sort__popup">
+          <ul>
+            {sortVariants.map((variant, index) => {
+              return (
+                <li
+                  onClick={() => {
+                    setSelectedVariant(index);
+                    setShowPopup(false);
+                  }}
+                  className={selectedVariant === index ? 'active' : ''}
+                  key={index}>
+                  {variant}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
