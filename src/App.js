@@ -4,9 +4,11 @@ import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
+import Skeleton from './components/PizzaBlock/Skeleton';
 
 function App() {
   const [pizzaItems, setPizzaItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
 
   const getPizzas = async () => {
@@ -16,6 +18,7 @@ function App() {
       if (response.ok) {
         const pizzaArr = await response.json();
         setPizzaItems(pizzaArr);
+        setIsLoading(false);
       }
     } catch (error) {
       alert(`Ошибка при загрузке данных: ${error}`);
@@ -38,9 +41,11 @@ function App() {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
-              {pizzaItems.map((pizzaItem) => {
-                return <PizzaBlock {...pizzaItem} key={pizzaItem.id} />;
-              })}
+              {isLoading
+                ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+                : pizzaItems.map((pizzaItem) => {
+                    return <PizzaBlock {...pizzaItem} key={pizzaItem.id} />;
+                  })}
             </div>
           </div>
         </div>
