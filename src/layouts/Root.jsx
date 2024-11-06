@@ -1,5 +1,4 @@
-import Header from '../../components/Header';
-import NotFound from '../routes/NotFound';
+import Header from '../components/Header';
 import { Outlet } from 'react-router-dom';
 
 export default function Root() {
@@ -8,7 +7,6 @@ export default function Root() {
       <div className="wrapper">
         <Header />
         <div className="content">
-          <NotFound />            
           <Outlet />
         </div>
       </div>

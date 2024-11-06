@@ -1,13 +1,18 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Root from './layouts/Root';
-import Home from './routes/Home';
-import Cart from './routes/Cart';
+import Root from '../layouts/Root';
+import Home from '../pages/Home';
+import Cart from '../pages/Cart';
+import NotFound from '../pages/NotFound';
 
 const router = createBrowserRouter([
-  { element: <Root />,
+  {
+    path: '/',
+    element: <Root />,
     children: [
-      { path: '/', element: <Home />, },
-      { path: '/cart', element: <Cart />, },
+      { path: '', element: <Home /> },
+      { path: 'cart', element: <Cart /> },
+      // Добавьте обработку "catch-all" маршрута
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);

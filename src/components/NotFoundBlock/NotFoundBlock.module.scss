@@ -1,0 +1,14 @@
+.nfblock {
+  margin: 0 auto;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 16px;
+
+  .image {
+    width: 100px;
+    height: 100px;
+  }
+}
