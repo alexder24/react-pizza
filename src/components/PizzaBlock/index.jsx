@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function PizzaBlock({ 
-  imageUrl, title, types, sizes, price, category 
+  imageUrl, title, types, sizes, price 
 }) {
   
   const [pizzaType, setPizzaType] = useState(0);

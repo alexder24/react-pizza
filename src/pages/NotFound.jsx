@@ -1,4 +1,4 @@
-import NotFoundBlock from "../components/NotFoundBlock";
+import NotFoundBlock from "@/components/NotFoundBlock";
 
 export default function NotFound() {
   return <NotFoundBlock />;

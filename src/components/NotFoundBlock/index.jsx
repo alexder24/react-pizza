@@ -1,5 +1,5 @@
 import styles from './NotFoundBlock.module.scss';
-import nfImg from '../../assets/img/sad-face.svg';
+import nfImg from '@/assets/img/sad-face.svg';
 
 export default function NotFoundBlock() {
   return (
