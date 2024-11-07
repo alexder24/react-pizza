@@ -25,6 +25,7 @@ export default function Home() {
 
   useEffect(() => {
     getPizzas();
+    window.scrollTo(0, 0);
   }, []);
 
   return (
