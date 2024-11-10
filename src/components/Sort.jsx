@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
-export default function Sort() {
-  const [selectedVariant, setSelectedVariant] = useState(0);
+export default function Sort({ value, onСhangeSort }) {
   const [showPopup, setShowPopup] = useState(false);
 
-  const sortVariants = ['популярности', 'цене', 'алфавиту'];
+  const sortVariants = [
+    { name: 'популярности', sortPropery: 'rating' },
+    { name: 'цене', sortPropery: 'price' },
+    { name: 'алфавиту', sortPropery: 'title' },
+  ];
 
   return (
     <div className="sort">
@@ -21,21 +24,21 @@ export default function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setShowPopup(!showPopup)}>{sortVariants[selectedVariant]}</span>
+        <span onClick={() => setShowPopup(!showPopup)}>{value.name}</span>
       </div>
       {showPopup && (
         <div className="sort__popup">
           <ul>
-            {sortVariants.map((variant, index) => {
+            {sortVariants.map((obj, index) => {
               return (
                 <li
                   onClick={() => {
-                    setSelectedVariant(index);
+                    onСhangeSort(obj);
                     setShowPopup(false);
                   }}
-                  className={selectedVariant === index ? 'active' : ''}
+                  className={value.sortPropery === obj.sortPropery ? 'active' : ''}
                   key={index}>
-                  {variant}
+                  {obj.name}
                 </li>
               );
             })}
