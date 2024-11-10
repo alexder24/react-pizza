@@ -11,6 +11,7 @@ export default function Home() {
   const [activeSort, setActiveSort] = useState({
     name: 'популярности',
     sortPropery: 'rating',
+    order: 'desc',
   });
   const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
 
@@ -18,7 +19,7 @@ export default function Home() {
     try {
       setIsLoading(true);
       const queryCategory = activeCategory > 0 ? `category=${activeCategory}` : '';
-      const querySort = `sortBy=${activeSort.sortPropery}&order=desc`;
+      const querySort = `sortBy=${activeSort.sortPropery}&order=${activeSort.order}`;
       const response = await fetch(`${pizzaApi}?${queryCategory}&${querySort}`);
 
       if (response.ok) {

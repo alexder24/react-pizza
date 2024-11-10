@@ -4,9 +4,12 @@ export default function Sort({ value, onСhangeSort }) {
   const [showPopup, setShowPopup] = useState(false);
 
   const sortVariants = [
-    { name: 'популярности', sortPropery: 'rating' },
-    { name: 'цене', sortPropery: 'price' },
-    { name: 'алфавиту', sortPropery: 'title' },
+    { name: 'популярности', sortPropery: 'rating', order: 'asc' },
+    { name: 'популярности', sortPropery: 'rating', order: 'desc' },
+    { name: 'цене', sortPropery: 'price', order: 'asc' },
+    { name: 'цене', sortPropery: 'price', order: 'desc' },
+    { name: 'алфавиту', sortPropery: 'title', order: 'asc' },
+    { name: 'алфавиту', sortPropery: 'title', order: 'desc' },
   ];
 
   return (
@@ -36,9 +39,13 @@ export default function Sort({ value, onСhangeSort }) {
                     onСhangeSort(obj);
                     setShowPopup(false);
                   }}
-                  className={value.sortPropery === obj.sortPropery ? 'active' : ''}
+                  className={
+                    value.sortPropery === obj.sortPropery && value.order === obj.order
+                      ? 'active'
+                      : ''
+                  }
                   key={index}>
-                  {obj.name}
+                  {obj.name + ' ' + (obj.order === 'asc' ? '↑' : '↓')}
                 </li>
               );
             })}
