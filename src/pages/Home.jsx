@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { SearchContext } from '@/layouts/Root';
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
 import PizzaBlock from '@/components/PizzaBlock';
@@ -13,14 +14,16 @@ export default function Home() {
     sortPropery: 'rating',
     order: 'desc',
   });
+  const { searchValue } = useContext(SearchContext);
   const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
 
   const getPizzas = useCallback(async () => {
     try {
       setIsLoading(true);
-      const queryCategory = activeCategory > 0 ? `category=${activeCategory}` : '';
+      const queryCategory = activeCategory > 0 ? `&category=${activeCategory}` : '';
       const querySort = `sortBy=${activeSort.sortPropery}&order=${activeSort.order}`;
-      const response = await fetch(`${pizzaApi}?${queryCategory}&${querySort}`);
+      const querySearch = searchValue ? `search=${searchValue.toLocaleLowerCase()}` : '';
+      const response = await fetch(`${pizzaApi}?${querySearch}${queryCategory}&${querySort}`);
 
       if (response.ok) {
         const pizzaArr = await response.json();
@@ -30,12 +33,12 @@ export default function Home() {
     } catch (error) {
       alert(`Ошибка при загрузке данных: ${error}`);
     }
-  }, [activeCategory, activeSort, pizzaApi]);
+  }, [activeCategory, activeSort, searchValue, pizzaApi]);
 
   useEffect(() => {
     getPizzas();
     window.scrollTo(0, 0);
-  }, [activeCategory, activeSort]);
+  }, [activeCategory, activeSort, searchValue, getPizzas]);
 
   return (
     <div className="container">
