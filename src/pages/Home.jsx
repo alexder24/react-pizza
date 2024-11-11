@@ -4,6 +4,7 @@ import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
 import PizzaBlock from '@/components/PizzaBlock';
 import Skeleton from '@/components/PizzaBlock/Skeleton';
+import Pagination from '@/components/Pagination';
 
 export default function Home() {
   const [pizzaItems, setPizzaItems] = useState([]);
@@ -14,6 +15,10 @@ export default function Home() {
     sortPropery: 'rating',
     order: 'desc',
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = 10;
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
   const { searchValue } = useContext(SearchContext);
   const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
 
@@ -23,7 +28,8 @@ export default function Home() {
       const queryCategory = activeCategory > 0 ? `&category=${activeCategory}` : '';
       const querySort = `sortBy=${activeSort.sortPropery}&order=${activeSort.order}`;
       const querySearch = searchValue ? `search=${searchValue.toLocaleLowerCase()}` : '';
-      const response = await fetch(`${pizzaApi}?${querySearch}${queryCategory}&${querySort}`);
+      const queryPage = `page=${currentPage}&limit=${itemsPerPage}`;
+      const response = await fetch(`${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`);
 
       if (response.ok) {
         const pizzaArr = await response.json();
@@ -33,12 +39,12 @@ export default function Home() {
     } catch (error) {
       alert(`Ошибка при загрузке данных: ${error}`);
     }
-  }, [activeCategory, activeSort, searchValue, pizzaApi]);
+  }, [activeCategory, activeSort, searchValue, pizzaApi, currentPage]);
 
   useEffect(() => {
     getPizzas();
     window.scrollTo(0, 0);
-  }, [activeCategory, activeSort, searchValue, getPizzas]);
+  }, [activeCategory, activeSort, searchValue, currentPage, getPizzas]);
 
   return (
     <div className="container">
@@ -49,11 +55,16 @@ export default function Home() {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+          ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
           : pizzaItems.map((pizzaItem) => {
               return <PizzaBlock {...pizzaItem} key={pizzaItem.id} />;
             })}
       </div>
+      <Pagination
+        onPageChange={page => setCurrentPage(page)}
+        total={totalPages}
+        current={currentPage}
+      />
     </div>
   );
 }
