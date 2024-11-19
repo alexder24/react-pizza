@@ -10,18 +10,12 @@ import Pagination from '@/components/Pagination';
 
 export default function Home() {
   const [pizzaItems, setPizzaItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeSort, setActiveSort] = useState({
-    name: 'популярности',
-    sortPropery: 'rating',
-    order: 'desc',
-  });
+  const [isLoading, setIsLoading] = useState(true);  
   const [currentPage, setCurrentPage] = useState(1);
   
   const dispatch = useDispatch();
-  const { categoryId } = useSelector(selectFilter);
-  console.log('categoryId:', categoryId);
-
+  const { categoryId, sort } = useSelector(selectFilter);
+  
   const totalItems = 10;
   const itemsPerPage = 4;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -32,7 +26,7 @@ export default function Home() {
     try {
       setIsLoading(true);
       const queryCategory = categoryId > 0 ? `&category=${categoryId}` : '';
-      const querySort = `sortBy=${activeSort.sortPropery}&order=${activeSort.order}`;
+      const querySort = `sortBy=${sort.sortProperty}&order=${sort.order}`;
       const querySearch = searchValue ? `search=${searchValue.toLocaleLowerCase()}` : '';
       const queryPage = `page=${currentPage}&limit=${itemsPerPage}`;
       const response = await fetch(`${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`);
@@ -45,18 +39,18 @@ export default function Home() {
     } catch (error) {
       alert(`Ошибка при загрузке данных: ${error}`);
     }
-  }, [categoryId, activeSort, searchValue, pizzaApi, currentPage]);
+  }, [categoryId, sort, searchValue, pizzaApi, currentPage]);
 
   useEffect(() => {
     getPizzas();
     window.scrollTo(0, 0);
-  }, [categoryId, activeSort, searchValue, currentPage, getPizzas]);
+  }, [categoryId, sort, searchValue, currentPage, getPizzas]);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onСhangeCategory={(index) => dispatch(setCategoryId(index))} />
-        <Sort value={activeSort} onСhangeSort={(index) => setActiveSort(index)} />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

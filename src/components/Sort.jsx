@@ -1,19 +1,35 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectSort, setSort } from '@/redux/slices/filterSlice';
 
-export default function Sort({ value, onСhangeSort }) {
+export default function Sort() {
   const [showPopup, setShowPopup] = useState(false);
-
+  const dispatch = useDispatch();
+  const sort = useSelector(selectSort);
+  const sortRef = useRef();
+  
   const sortVariants = [
-    { name: 'популярности', sortPropery: 'rating', order: 'asc' },
-    { name: 'популярности', sortPropery: 'rating', order: 'desc' },
-    { name: 'цене', sortPropery: 'price', order: 'asc' },
-    { name: 'цене', sortPropery: 'price', order: 'desc' },
-    { name: 'алфавиту', sortPropery: 'title', order: 'asc' },
-    { name: 'алфавиту', sortPropery: 'title', order: 'desc' },
+    { name: 'популярности', sortProperty: 'rating', order: 'asc' },
+    { name: 'популярности', sortProperty: 'rating', order: 'desc' },
+    { name: 'цене', sortProperty: 'price', order: 'asc' },
+    { name: 'цене', sortProperty: 'price', order: 'desc' },
+    { name: 'алфавиту', sortProperty: 'title', order: 'asc' },
+    { name: 'алфавиту', sortProperty: 'title', order: 'desc' },
   ];
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const path = event.composedPath ? event.composedPath() : event.path;
+      if (!path.includes(sortRef.current)) {
+        setShowPopup(false);
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    return () => document.body.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -27,7 +43,7 @@ export default function Sort({ value, onСhangeSort }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setShowPopup(!showPopup)}>{value.name}</span>
+        <span onClick={() => setShowPopup(!showPopup)}>{sort.name}</span>
       </div>
       {showPopup && (
         <div className="sort__popup">
@@ -36,11 +52,11 @@ export default function Sort({ value, onСhangeSort }) {
               return (
                 <li
                   onClick={() => {
-                    onСhangeSort(obj);
+                    dispatch(setSort(obj));
                     setShowPopup(false);
                   }}
                   className={
-                    value.sortPropery === obj.sortPropery && value.order === obj.order
+                    sort.sortProperty === obj.sortProperty && sort.order === obj.order
                       ? 'active'
                       : ''
                   }
