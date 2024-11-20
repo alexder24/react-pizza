@@ -2,21 +2,21 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSort, setSort } from '@/redux/slices/filterSlice';
 
+export const sortVariants = [
+  { name: 'популярности', sortProperty: 'rating', order: 'asc' },
+  { name: 'популярности', sortProperty: 'rating', order: 'desc' },
+  { name: 'цене', sortProperty: 'price', order: 'asc' },
+  { name: 'цене', sortProperty: 'price', order: 'desc' },
+  { name: 'алфавиту', sortProperty: 'title', order: 'asc' },
+  { name: 'алфавиту', sortProperty: 'title', order: 'desc' },
+];
+
 export default function Sort() {
   const [showPopup, setShowPopup] = useState(false);
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
   const sortRef = useRef();
   
-  const sortVariants = [
-    { name: 'популярности', sortProperty: 'rating', order: 'asc' },
-    { name: 'популярности', sortProperty: 'rating', order: 'desc' },
-    { name: 'цене', sortProperty: 'price', order: 'asc' },
-    { name: 'цене', sortProperty: 'price', order: 'desc' },
-    { name: 'алфавиту', sortProperty: 'title', order: 'asc' },
-    { name: 'алфавиту', sortProperty: 'title', order: 'desc' },
-  ];
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       const path = event.composedPath ? event.composedPath() : event.path;

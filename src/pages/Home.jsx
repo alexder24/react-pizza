@@ -1,7 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilter, setCategoryId, setCurrentPage } from '@/redux/slices/filterSlice';
+import { useNavigate } from 'react-router-dom';
+import { 
+  selectFilter,
+  setCategoryId,
+  setCurrentPage,
+  setFilters
+} from '@/redux/slices/filterSlice';
+import { sortVariants } from '@/components/Sort';
 import axios from 'axios';
+import qs from 'qs';
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
 import PizzaBlock from '@/components/PizzaBlock';
@@ -14,6 +22,9 @@ export default function Home() {
   
   const dispatch = useDispatch();
   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilter);
+
+  const navigate = useNavigate();
+  const isMounted = useRef(false);
   
   const totalItems = 10;
   const itemsPerPage = 4;
@@ -41,9 +52,35 @@ export default function Home() {
   }, [categoryId, sort, searchValue, pizzaApi, currentPage]);
 
   useEffect(() => {
+    if (isMounted.current) {
+      const params = {
+        categoryId: categoryId > 0 ? categoryId : null,
+        sortProperty: sort.sortProperty,
+        order: sort.order,
+        currentPage,
+      };
+
+      const queryString = qs.stringify(params, { skipNulls: true });
+      navigate(`/?${queryString}`);
+    }
+
+    if (!window.location.search) getPizzas();
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+
+  useEffect(() => {
     getPizzas();
     window.scrollTo(0, 0);
   }, [categoryId, sort, searchValue, currentPage, getPizzas]);
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = sortVariants.find((obj) => (obj.sortProperty === params.sortProperty && obj.order === params.order));
+      if (sort) params.sort = sort;
+      dispatch(setFilters(params));
+    }
+    isMounted.current = true;
+  }, []);
 
   return (
     <div className="container">
