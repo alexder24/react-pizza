@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setCategoryId } from '@/redux/slices/filterSlice';
 import { SearchContext } from '@/layouts/Root';
+import axios from 'axios';
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
 import PizzaBlock from '@/components/PizzaBlock';
@@ -29,11 +30,11 @@ export default function Home() {
       const querySort = `sortBy=${sort.sortProperty}&order=${sort.order}`;
       const querySearch = searchValue ? `search=${searchValue.toLocaleLowerCase()}` : '';
       const queryPage = `page=${currentPage}&limit=${itemsPerPage}`;
-      const response = await fetch(`${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`);
-
-      if (response.ok) {
-        const pizzaArr = await response.json();
-        setPizzaItems(pizzaArr);
+      const fetchQuery = `${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`;
+      const fetchedPizzas = await axios.get(fetchQuery);
+      
+      if (fetchedPizzas.status === 200) {
+        setPizzaItems(fetchedPizzas.data);
         setIsLoading(false);
       }
     } catch (error) {
