@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFilter, setCategoryId } from '@/redux/slices/filterSlice';
+import { selectFilter, setCategoryId, setCurrentPage } from '@/redux/slices/filterSlice';
 import axios from 'axios';
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
@@ -10,11 +10,10 @@ import Pagination from '@/components/Pagination';
 
 export default function Home() {
   const [pizzaItems, setPizzaItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);  
-  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   
   const dispatch = useDispatch();
-  const { categoryId, sort, searchValue } = useSelector(selectFilter);
+  const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilter);
   
   const totalItems = 10;
   const itemsPerPage = 4;
@@ -61,7 +60,7 @@ export default function Home() {
             })}
       </div>
       <Pagination
-        onPageChange={page => setCurrentPage(page)}
+        onPageChange={page => dispatch(setCurrentPage(page))}
         total={totalPages}
         current={currentPage}
       />

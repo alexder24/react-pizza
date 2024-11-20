@@ -23,6 +23,9 @@ const filterSlice = createSlice({
     },
     setSearchValue(state, action) {
       state.searchValue = action.payload;
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
     }
 	}
 });
@@ -32,4 +35,9 @@ export const selectSort = (state) => state.filter.sort;
 
 export default filterSlice.reducer;
 
-export const { setCategoryId, setSort, setSearchValue } = filterSlice.actions;
+export const { 
+  setCategoryId,
+  setSort,
+  setSearchValue,
+  setCurrentPage
+} = filterSlice.actions;
