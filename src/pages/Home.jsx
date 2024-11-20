@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setCategoryId } from '@/redux/slices/filterSlice';
-import { SearchContext } from '@/layouts/Root';
 import axios from 'axios';
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
@@ -15,12 +14,11 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   
   const dispatch = useDispatch();
-  const { categoryId, sort } = useSelector(selectFilter);
+  const { categoryId, sort, searchValue } = useSelector(selectFilter);
   
   const totalItems = 10;
   const itemsPerPage = 4;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const { searchValue } = useContext(SearchContext);
   const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
 
   const getPizzas = useCallback(async () => {
@@ -39,6 +37,7 @@ export default function Home() {
       }
     } catch (error) {
       alert(`Ошибка при загрузке данных: ${error}`);
+      //status 404 ничего не найдено
     }
   }, [categoryId, sort, searchValue, pizzaApi, currentPage]);
 
