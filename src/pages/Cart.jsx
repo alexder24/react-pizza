@@ -7,7 +7,13 @@ import CartEmpty from "@/components/CartEmpty";
 export default function Cart() {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector(selectCart);
-  
+
+  const onClickEmpty = () => {
+    if (window.confirm('Удалить все товары из корзины?')) {
+      dispatch(clearItems());
+    }
+  };
+
   if (totalPrice === 0) return <CartEmpty />
 
   return (
@@ -47,7 +53,7 @@ export default function Cart() {
             Корзина
           </h2>
           <button
-            onClick={() => dispatch(clearItems())}
+            onClick={onClickEmpty}
             disabled={items.length === 0}
             className="cart__clear">
             <svg
@@ -90,7 +96,7 @@ export default function Cart() {
           </button>
         </div>
         <div className="content__items">
-          <CartItem />
+          {items.map((item, index) => <CartItem item={item} key={index}/>)}
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
@@ -126,9 +132,9 @@ export default function Cart() {
 
               <span>Вернуться назад</span>
             </Link>
-            <div className="button pay-btn">
+            <button className="button pay-btn">
               <span>Оплатить сейчас</span>
-            </div>
+            </button>
           </div>
         </div>
       </div>

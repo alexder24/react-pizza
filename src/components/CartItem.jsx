@@ -1,22 +1,17 @@
-export default function CartItem({ 
-	imageUrl,
-	title,
-	types,
-	sizes,
-	price
-}) {
+export default function CartItem({item}) {
+			
 	return (
 		<div className="cart__item">
 			<div className="cart__item-img">
 				<img
 					className="pizza-block__image"
-					src={imageUrl}
+					src={item.imageUrl}
 					alt="Pizza"
 				/>
 			</div>
 			<div className="cart__item-info">
-				<h3>{title}</h3>
-				<p>тонкое тесто, 26 см.</p>
+				<h3>{item.title}</h3>
+				<p>{item.type} тесто, {item.size} см.</p>
 			</div>
 			<div className="cart__item-count">
 				<div className="button button--outline button--circle cart__item-count-minus">
@@ -58,7 +53,7 @@ export default function CartItem({
 				</div>
 			</div>
 			<div className="cart__item-price">
-				<b>{price} ₽</b>
+				<b>{item.price} ₽</b>
 			</div>
 			<div className="cart__item-remove">
 				<button className="button button--outline button--circle">

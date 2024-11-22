@@ -23,7 +23,6 @@ export default function PizzaBlock({
       size: sizes[pizzaSize],
     };
     dispatch(addItem(item));
-    console.log('addedCount', addedCount);
   };
 
   return (
