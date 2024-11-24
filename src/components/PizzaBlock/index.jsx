@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItemById, addItem } from '@/redux/slices/cartSlice';
 
-export default function PizzaBlock({ 
-  id, imageUrl, title, types, sizes, price
-}) {
-  const [pizzaType, setPizzaType] = useState(0);
-  const [pizzaSize, setPizzaSize] = useState(0);
-  
+const pizzaTypes = ['тонкое', 'традиционное'];
+
+export default function PizzaBlock({ id, imageUrl, title, types, sizes, price }) {
   const dispatch = useDispatch();
   const cartItem = useSelector(selectItemById(id));
-  const addedCount = cartItem ? cartItem.count : 0;
-  const pizzaTypes = ['тонкое', 'традиционное'];
+
+  const [pizzaType, setPizzaType] = useState(0);
+  const [pizzaSize, setPizzaSize] = useState(0);
+  const [localCount, setLocalCount] = useState(0);
+
+  useEffect(() => {
+    if (cartItem) setLocalCount(cartItem.count);
+  }, [cartItem]);
 
   const onClickAdd = () => {
     const item = {
@@ -23,41 +26,42 @@ export default function PizzaBlock({
       size: sizes[pizzaSize],
     };
     dispatch(addItem(item));
+    setLocalCount((prev) => prev + 1);
   };
 
   return (
     <div className="pizza-block">
-      <img
-        className="pizza-block__image"
-        src={imageUrl}
-        alt="Pizza"
-      />
+      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
           {types.map((value, index) => {
-            return <li 
-              onClick={() => setPizzaType(index)}
-              className={pizzaType === index ? "active" : ""}
-              key={index}
-            >{pizzaTypes[value]}</li>
+            return (
+              <li
+                onClick={() => setPizzaType(index)}
+                className={pizzaType === index ? 'active' : ''}
+                key={index}>
+                {pizzaTypes[value]}
+              </li>
+            );
           })}
         </ul>
         <ul>
           {sizes.map((value, index) => {
-            return <li
-              onClick={() => setPizzaSize(index)}  
-              className={pizzaSize === index ? "active" : ""}
-              key={index}
-            >{value} см.</li>
+            return (
+              <li
+                onClick={() => setPizzaSize(index)}
+                className={pizzaSize === index ? 'active' : ''}
+                key={index}>
+                {value} см.
+              </li>
+            );
           })}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button 
-          onClick={onClickAdd}
-          className="button button--outline button--add">
+        <button onClick={onClickAdd} className="button button--outline button--add">
           <svg
             width="12"
             height="12"
@@ -70,7 +74,7 @@ export default function PizzaBlock({
             />
           </svg>
           <span>Добавить</span>
-          {addedCount > 0 && <i>{addedCount}</i>}
+          {localCount > 0 && <i>{localCount}</i>}
         </button>
       </div>
     </div>
