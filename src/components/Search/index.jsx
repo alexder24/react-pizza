@@ -13,19 +13,19 @@ export default function Search() {
     dispatch(setSearchValue(''));
     setSearchInputValue('');
     searchInputRef.current.focus();
-  }
+  };
 
   const updateSearchValue = useCallback(
     debounce((str) => {
       dispatch(setSearchValue(str));
     }, 250),
-    [],
+    [dispatch],
   );
 
   const onChangeSearchValue = (event) => {
     setSearchInputValue(event.target.value);
     updateSearchValue(event.target.value);
-  }
+  };
 
   return (
     <div className={styles.root}>

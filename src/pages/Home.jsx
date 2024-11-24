@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { 
+import {
   selectFilter,
   setCategoryId,
   setCurrentPage,
-  setFilters
+  setFilters,
 } from '@/redux/slices/filterSlice';
 import { sortVariants } from '@/components/Sort';
 import axios from 'axios';
@@ -19,13 +19,13 @@ import Pagination from '@/components/Pagination';
 export default function Home() {
   const [pizzaItems, setPizzaItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const dispatch = useDispatch();
   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilter);
 
   const navigate = useNavigate();
   const isMounted = useRef(false);
-  
+
   const totalItems = 10;
   const itemsPerPage = 4;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -40,7 +40,7 @@ export default function Home() {
       const queryPage = `page=${currentPage}&limit=${itemsPerPage}`;
       const fetchQuery = `${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`;
       const fetchedPizzas = await axios.get(fetchQuery);
-      
+
       if (fetchedPizzas.status === 200) {
         setPizzaItems(fetchedPizzas.data);
         setIsLoading(false);
@@ -65,7 +65,7 @@ export default function Home() {
     }
 
     if (!window.location.search) getPizzas();
-  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+  }, [categoryId, sort.sortProperty, searchValue, currentPage, getPizzas, navigate, sort.order]);
 
   useEffect(() => {
     getPizzas();
@@ -75,17 +75,22 @@ export default function Home() {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      const sort = sortVariants.find((obj) => (obj.sortProperty === params.sortProperty && obj.order === params.order));
+      const sort = sortVariants.find(
+        (obj) => obj.sortProperty === params.sortProperty && obj.order === params.order,
+      );
       if (sort) params.sort = sort;
       dispatch(setFilters(params));
     }
     isMounted.current = true;
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onСhangeCategory={(index) => dispatch(setCategoryId(index))} />
+        <Categories
+          value={categoryId}
+          onСhangeCategory={(index) => dispatch(setCategoryId(index))}
+        />
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
@@ -97,7 +102,7 @@ export default function Home() {
             })}
       </div>
       <Pagination
-        onPageChange={page => dispatch(setCurrentPage(page))}
+        onPageChange={(page) => dispatch(setCurrentPage(page))}
         total={totalPages}
         current={currentPage}
       />
