@@ -22,6 +22,11 @@ body {
 }
 
 .content {
+  &__error {
+    margin: 50px 0px;
+    text-align: center;
+  }  
+  
   padding: 40px 0;
 
   @media (max-width: 645px) {
