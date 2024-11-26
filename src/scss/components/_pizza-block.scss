@@ -72,4 +72,16 @@
     line-height: 27px;
     letter-spacing: 0.015em;
   }
+
+  &_detailed {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_button {
+    margin-left: 100px;
+  }
 }

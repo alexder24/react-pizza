@@ -3,6 +3,7 @@ import Root from '@/layouts/Root';
 import Home from '@/pages/Home';
 import Cart from '@/pages/Cart';
 import NotFound from '@/pages/NotFound';
+import DetailedPizza from '@/pages/DetailedPizza';
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <Home /> },
       { path: 'cart', element: <Cart /> },
+      { path: 'pizza/:id', element: <DetailedPizza /> },
       { path: '*', element: <NotFound /> },
     ],
   },
