@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const pizzaTypes: string[] = ['тонкое', 'традиционное'];
 
-interface PizzaBlockProps {
+export interface PizzaBlockProps {
   id: string;
   imageUrl: string;
   title: string;

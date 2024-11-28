@@ -1,44 +1,35 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchPizzas } from "./asyncActions";
+import { Pizza, PizzaSliceState, Status } from "./types";
 
-const initialState = {
+const initialState: PizzaSliceState = {
  items: [],
- status: 'loading',
+ status: Status.LOADING,
 };
-
-export const fetchPizzas = createAsyncThunk(
-  'pizza/fetchPizzaStatus',
-  async (fetchQuery) => {
-    const { data } = await axios.get(fetchQuery);
-    return data;
-  }
-);
 
 const pizzaSlice = createSlice({
   name: 'pizza',
   initialState,
   reducers: {
-    setItems(state, action) {
+    setItems(state, action: PayloadAction<Pizza[]>) {
       state.items = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {
-      state.status = 'loading';
+      state.status = Status.LOADING;
       state.items = [];
     });
     builder.addCase(fetchPizzas.rejected, (state) => {
-      state.status = 'error';
+      state.status = Status.ERROR;
       state.items = [];
     });
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
-      state.status = 'success';
+      state.status = Status.SUCCESS;
       state.items = action.payload;
     });
   }
 });
-
-export const selectPizzaData = (state) => state.pizza;
 
 export const { setItems } = pizzaSlice.actions;
 

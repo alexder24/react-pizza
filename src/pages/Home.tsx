@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   selectFilter,
@@ -7,38 +7,44 @@ import {
   setCurrentPage,
   setFilters,
 } from '@/redux/slices/filterSlice';
-import { selectPizzaData, fetchPizzas } from '@/redux/slices/pizzaSlice';
+import { selectPizzaData } from '@/redux/pizza/selectors';
+import { fetchPizzas } from '@/redux/pizza/asyncActions';
+import { useAppDispatch } from '@/redux/store';
 import { sortVariants } from '@/components/Sort';
 import qs from 'qs';
+
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
 import PizzaBlock from '@/components/PizzaBlock';
+import { PizzaBlockProps } from '@/components/PizzaBlock';
 import Skeleton from '@/components/PizzaBlock/Skeleton';
 import Pagination from '@/components/Pagination';
 import PizzaError from '@/components/PizzaError';
 
-const pizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items';
-
 export default function Home() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzaData);
    
   const navigate = useNavigate();
   const isMounted = useRef(false);
 
-  const totalItems = 10;
-  const itemsPerPage = 4;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const totalItems = 10; 
+  const totalPages = Math.ceil(totalItems / 4);
   
   const getPizzas = useCallback(async () => {
-    const queryCategory = categoryId > 0 ? `&category=${categoryId}` : '';
-    const querySort = `sortBy=${sort.sortProperty}&order=${sort.order}`;
-    const querySearch = searchValue ? `search=${searchValue.toLocaleLowerCase()}` : '';
-    const queryPage = `page=${currentPage}&limit=${itemsPerPage}`;
-    const fetchQuery = `${pizzaApi}?${querySearch}${queryCategory}&${querySort}&${queryPage}`;
-    dispatch(fetchPizzas(fetchQuery));
-  }, [dispatch, categoryId, currentPage, itemsPerPage, sort, searchValue]);
+    const category = categoryId > 0 ? `${categoryId}` : '';
+    const sortBy = `${sort.sortProperty}`;
+    const order = `${sort.order}`;
+    const search = searchValue ? `${searchValue.toLocaleLowerCase()}` : '';    
+    dispatch(fetchPizzas({
+      sortBy,
+      order,
+      category,
+      search,
+      currentPage: String(currentPage),
+    }));
+  }, [dispatch, categoryId, currentPage, sort, searchValue]);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -78,7 +84,7 @@ export default function Home() {
       <div className="content__top">
         <Categories
           value={categoryId}
-          onСhangeCategory={(index) => dispatch(setCategoryId(index))}
+          onСhangeCategory={(index: string) => dispatch(setCategoryId(index))}
         />
         <Sort />
       </div>
@@ -87,7 +93,7 @@ export default function Home() {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-            : items.map((pizzaItem) => {
+            : items.map((pizzaItem: PizzaBlockProps) => {
                 return <PizzaBlock {...pizzaItem} key={pizzaItem.id} />;
               })}
         </div>
