@@ -3,9 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectItemById, addItem } from '@/redux/slices/cartSlice';
 import { Link } from 'react-router-dom';
 
-const pizzaTypes = ['тонкое', 'традиционное'];
+const pizzaTypes: string[] = ['тонкое', 'традиционное'];
 
-export default function PizzaBlock({ id, imageUrl, title, types, sizes, price }) {
+interface PizzaBlockProps {
+  id: string;
+  imageUrl: string;
+  title: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+}
+
+export default function PizzaBlock({ id, imageUrl, title, types, sizes, price }: PizzaBlockProps) {
   const dispatch = useDispatch();
   const cartItem = useSelector(selectItemById(id));
 
