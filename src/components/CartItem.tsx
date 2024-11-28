@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { addItem, removeItem, minusItem } from '@/redux/slices/cartSlice';
 
-interface Item {
+export interface Item {
   id: string;
   title: string;
   price: number;

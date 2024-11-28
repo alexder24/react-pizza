@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearItems, selectCart } from '@/redux/slices/cartSlice';
 import CartItem from '@/components/CartItem';
+import { Item } from '@/components/CartItem';
 import CartEmpty from '@/components/CartEmpty';
 
 export default function Cart() {
@@ -91,8 +92,8 @@ export default function Cart() {
           </button>
         </div>
         <div className="content__items">
-          {items.map((item, index) => (
-            <CartItem item={item} key={index} />
+          {items.map((item: Item) => (
+            <CartItem item={item} key={item.id} />
           ))}
         </div>
         <div className="cart__bottom">
