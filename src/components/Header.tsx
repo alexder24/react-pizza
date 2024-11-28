@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo from '@/assets/img/pizza-logo.svg';
 import Search from '@/components/Search';
-import { selectTotalCount, selectTotalPrice } from '@/redux/slices/cartSlice';
+import { selectTotalCount, selectTotalPrice } from '@/redux/cart/selectors';
 
 export default function Header() {
   const totalCount = useSelector(selectTotalCount);

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { addItem, removeItem, minusItem } from '@/redux/slices/cartSlice';
+import { addItem, removeItem, minusItem } from '@/redux/cart/slice';
 
 export interface Item {
   id: string;

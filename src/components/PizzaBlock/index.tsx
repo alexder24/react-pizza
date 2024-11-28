@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItemById, addItem } from '@/redux/slices/cartSlice';
+import { addItem } from '@/redux/cart/slice';
+import { CartItem } from '@/redux/cart/types';
+import { selectItemById } from '@/redux/cart/selectors';
 import { Link } from 'react-router-dom';
 
 const pizzaTypes: string[] = ['тонкое', 'традиционное'];
@@ -27,13 +29,14 @@ export default function PizzaBlock({ id, imageUrl, title, types, sizes, price }:
   }, [cartItem]);
 
   const onClickAdd = () => {
-    const item = {
+    const item: CartItem = {
       id,
       title,
       price,
       imageUrl,
       type: pizzaTypes[pizzaType],
       size: sizes[pizzaSize],
+      count: 0,
     };
     dispatch(addItem(item));
     setLocalCount((prev) => prev + 1);
