@@ -2,16 +2,17 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
-  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
-} from '@/redux/slices/filterSlice';
+} from '@/redux/filter/slice';
+import { selectFilter } from '@/redux/filter/selectors';
 import { selectPizzaData } from '@/redux/pizza/selectors';
 import { fetchPizzas } from '@/redux/pizza/asyncActions';
 import { useAppDispatch } from '@/redux/store';
 import { sortVariants } from '@/components/Sort';
 import qs from 'qs';
+import { ParsedQs } from 'qs';
 
 import Categories from '@/components/Categories';
 import Sort from '@/components/Sort';
@@ -69,12 +70,14 @@ export default function Home() {
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
+      const params: ParsedQs = qs.parse(window.location.search.substring(1));
       const sort = sortVariants.find(
         (obj) => obj.sortProperty === params.sortProperty && obj.order === params.order,
       );
-      if (sort) params.sort = sort;
-      dispatch(setFilters(params));
+      if (sort) {
+        params.sort = sort;
+        // dispatch(setFilters(params));
+      }
     }
     isMounted.current = true;
   }, [dispatch]);
@@ -84,7 +87,7 @@ export default function Home() {
       <div className="content__top">
         <Categories
           value={categoryId}
-          onСhangeCategory={(index: string) => dispatch(setCategoryId(index))}
+          onСhangeCategory={(index: number) => dispatch(setCategoryId(index))}
         />
         <Sort />
       </div>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/redux/store';
 import { clearItems } from '@/redux/cart/slice';
 import { selectCart } from '@/redux/cart/selectors';
 import CartItem from '@/components/CartItem';
@@ -7,7 +8,7 @@ import { Item } from '@/components/CartItem';
 import CartEmpty from '@/components/CartEmpty';
 
 export default function Cart() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { items, totalPrice, totalCount } = useSelector(selectCart);
 
   const onClickEmpty = () => {

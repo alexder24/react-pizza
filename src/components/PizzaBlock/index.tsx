@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/redux/store';
 import { addItem } from '@/redux/cart/slice';
 import { CartItem } from '@/redux/cart/types';
 import { selectItemById } from '@/redux/cart/selectors';
@@ -17,7 +18,7 @@ export interface PizzaBlockProps {
 }
 
 export default function PizzaBlock({ id, imageUrl, title, types, sizes, price }: PizzaBlockProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const cartItem = useSelector(selectItemById(id));
 
   const [pizzaType, setPizzaType] = useState(0);

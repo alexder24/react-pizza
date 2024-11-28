@@ -1,29 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectSort, setSort } from '@/redux/slices/filterSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/redux/store';
+import { setSort } from '@/redux/filter/slice';
+import { selectSort } from '@/redux/filter/selectors'
+import { TSort, SortOrderEnum, SortPropertyEnum } from '@/redux/filter/types';
 
 type PopupClick = MouseEvent & { 
   path: Node[];
 };
 
-type SortVariant = {
-  name: string;
-  sortProperty: string;
-  order: string;
-}
-
-export const sortVariants: SortVariant[] = [
-  { name: 'популярности', sortProperty: 'rating', order: 'asc' },
-  { name: 'популярности', sortProperty: 'rating', order: 'desc' },
-  { name: 'цене', sortProperty: 'price', order: 'asc' },
-  { name: 'цене', sortProperty: 'price', order: 'desc' },
-  { name: 'алфавиту', sortProperty: 'title', order: 'asc' },
-  { name: 'алфавиту', sortProperty: 'title', order: 'desc' },
+export const sortVariants: TSort[] = [
+  { name: 'популярности', sortProperty: SortPropertyEnum.RATING, order: SortOrderEnum.ASC },
+  { name: 'популярности', sortProperty: SortPropertyEnum.RATING, order: SortOrderEnum.DESC },
+  { name: 'цене', sortProperty: SortPropertyEnum.PRICE, order: SortOrderEnum.ASC },
+  { name: 'цене', sortProperty: SortPropertyEnum.PRICE, order: SortOrderEnum.DESC },
+  { name: 'алфавиту', sortProperty: SortPropertyEnum.TITLE, order: SortOrderEnum.ASC },
+  { name: 'алфавиту', sortProperty: SortPropertyEnum.TITLE, order: SortOrderEnum.DESC },
 ];
 
 export default function Sort() {
   const [showPopup, setShowPopup] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const sort = useSelector(selectSort);
   const sortRef = useRef<HTMLDivElement>(null);
   

@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/redux/store';
 import { addItem, removeItem, minusItem } from '@/redux/cart/slice';
 
 export interface Item {
@@ -16,7 +16,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onClickPlus = () => {
     dispatch(addItem(item));
