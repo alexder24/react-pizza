@@ -1,6 +1,12 @@
 import styles from './Pagination.module.scss';
 
-export default function Pagination({ onPageChange, total, current }) {
+interface PaginationProps {
+  onPageChange: (page: number) => void;
+  total: number;
+  current: number;
+}
+
+export default function Pagination({ onPageChange, total, current }: PaginationProps) {
   const isFirstPage = current === 1;
   const isLastPage = current === total;
 
@@ -56,5 +62,6 @@ export default function Pagination({ onPageChange, total, current }) {
           </svg>
         </button>
       </li>
-    </ul>  )
+    </ul>
+  )
 }
