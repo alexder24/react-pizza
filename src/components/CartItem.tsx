@@ -43,6 +43,7 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
       <div className="cart__item-count">
         <button
+          disabled={item.count === 1}
           onClick={onClickMinus}
           className="button button--outline button--circle cart__item-count-minus">
           <svg

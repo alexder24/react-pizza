@@ -1,6 +1,13 @@
-export default function Categories({ value, onСhangeCategory }) {
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+import { memo } from 'react';
 
+type CategoriesProps = {
+  value: number;
+  onСhangeCategory: (id: number) => void;
+};
+
+const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+
+function Categories({ value, onСhangeCategory }: CategoriesProps) {
   return (
     <div className="categories">
       <ul>
@@ -18,3 +25,5 @@ export default function Categories({ value, onСhangeCategory }) {
     </div>
   );
 }
+
+export default memo(Categories);

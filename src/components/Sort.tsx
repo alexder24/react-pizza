@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/redux/store';
 import { setSort } from '@/redux/filter/slice';
-import { selectSort } from '@/redux/filter/selectors'
+import { selectSort } from '@/redux/filter/selectors';
 import { TSort, SortOrderEnum, SortPropertyEnum } from '@/redux/filter/types';
 
-type PopupClick = MouseEvent & { 
+type PopupClick = MouseEvent & {
   path: Node[];
 };
 
@@ -18,12 +18,12 @@ export const sortVariants: TSort[] = [
   { name: 'алфавиту', sortProperty: SortPropertyEnum.TITLE, order: SortOrderEnum.DESC },
 ];
 
-export default function Sort() {
+function Sort() {
   const [showPopup, setShowPopup] = useState(false);
   const dispatch = useAppDispatch();
   const sort = useSelector(selectSort);
   const sortRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const _event = event as PopupClick;
@@ -79,3 +79,5 @@ export default function Sort() {
     </div>
   );
 }
+
+export default memo(Sort);
