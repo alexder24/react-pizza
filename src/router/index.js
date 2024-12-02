@@ -1,9 +1,11 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Root from '@/layouts/Root';
-import Home from '@/pages/Home';
-import Cart from '@/pages/Cart';
-import NotFound from '@/pages/NotFound';
-import DetailedPizza from '@/pages/DetailedPizza';
+
+const Home = lazy(() => import(/* webpackChunkName: "Home" */ '@/pages/Home'));
+const Cart = lazy(() => import(/* webpackChunkName: "Cart" */ '@/pages/Cart'));
+const NotFound = lazy(() => import(/* webpackChunkName: "NotFound" */ '@/pages/NotFound'));
+const DetailedPizza = lazy(() => import(/* webpackChunkName: "DetailedPizza" */ '@/pages/DetailedPizza'));
 
 const router = createBrowserRouter([
   {

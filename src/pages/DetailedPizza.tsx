@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import Loader from '@/components/Loader';
 
 const detailedPizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items/';
 
@@ -35,7 +36,7 @@ export default function DetailedPizza() {
     if (id) getPizza(id);
   }, [id, getPizza]);
 
-  if (!pizza) return <div>Идет загрузка...</div>;
+  if (!pizza) return <Loader />;
 
   return (
     <>
