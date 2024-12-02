@@ -9,3 +9,4 @@ export { default as Pagination } from './Pagination';
 export { default as NotFoundBlock } from './NotFoundBlock';
 export { default as Sort } from './Sort';
 export { default as PizzaError } from './PizzaError';
+export { default as Loader } from './Loader'

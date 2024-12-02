@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import Loader from '@/components/Loader';
+import { Loader } from '@/components';
 
 const detailedPizzaApi = 'https://67270754302d03037e6f186e.mockapi.io/items/';
 

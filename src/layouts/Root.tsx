@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '@/components/Header';
-import Loader from '@/components/Loader';
+import { Header, Loader } from '@/components';
 
 export default function Root() {
   return (

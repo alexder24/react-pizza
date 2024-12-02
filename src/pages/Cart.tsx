@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/redux/store';
 import { clearItems } from '@/redux/cart/slice';
 import { selectCart } from '@/redux/cart/selectors';
-import CartItem from '@/components/CartItem';
+import { CartItem, CartEmpty } from '@/components';
 import { Item } from '@/components/CartItem';
-import CartEmpty from '@/components/CartEmpty';
 
 export default function Cart() {
   const dispatch = useAppDispatch();
