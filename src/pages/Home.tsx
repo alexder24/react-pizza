@@ -1,22 +1,14 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setCategoryId, setCurrentPage, setFilters } from '@/redux/filter/slice';
+import { setCategoryId, setCurrentPage } from '@/redux/filter/slice';
 import { selectFilter } from '@/redux/filter/selectors';
 import { selectPizzaData } from '@/redux/pizza/selectors';
 import { fetchPizzas } from '@/redux/pizza/asyncActions';
 import { useAppDispatch } from '@/redux/store';
-import { sortVariants } from '@/components/Sort';
-import qs from 'qs';
-import { ParsedQs } from 'qs';
-
-import Categories from '@/components/Categories';
-import Sort from '@/components/Sort';
-import PizzaBlock from '@/components/PizzaBlock';
+import { Categories, Sort, PizzaBlock, Skeleton, Pagination, PizzaError } from '@/components';
 import { PizzaBlockProps } from '@/components/PizzaBlock';
-import Skeleton from '@/components/PizzaBlock/Skeleton';
-import Pagination from '@/components/Pagination';
-import PizzaError from '@/components/PizzaError';
+import qs from 'qs';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -31,7 +23,7 @@ export default function Home() {
 
   const onChangeCategory = useCallback((index: number) => {
     dispatch(setCategoryId(index));
-  }, []);
+  }, [dispatch]);
 
   const getPizzas = useCallback(async () => {
     const category = categoryId > 0 ? `${categoryId}` : '';
@@ -71,18 +63,8 @@ export default function Home() {
   }, [categoryId, sort, searchValue, currentPage, getPizzas]);
 
   useEffect(() => {
-    if (window.location.search) {
-      const params: ParsedQs = qs.parse(window.location.search.substring(1));
-      const sort = sortVariants.find(
-        (obj) => obj.sortProperty === params.sortProperty && obj.order === params.order,
-      );
-      if (sort) {
-        params.sort = sort;
-        // dispatch(setFilters(params));
-      }
-    }
     isMounted.current = true;
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="container">
